@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>عربة التسوق</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    .cart {
+      padding-bottom: 80px; /* إضافة مسافة من الأسفل لتجنب التداخل مع شريط الدفع */
+    }
+    .cart-footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #730027;
+      padding: 1rem;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
+      padding-left: 2rem; /* المسافة من اليسار */
+      z-index: 10; /* لضمان عدم التداخل مع المحتوى */
+    }
+    .cart-footer .total-price {
+      color: white;
+      font-size: 1.2rem;
+    }
+    .cart-footer button {
+      background-color: #e1b382;
+      color: #730027;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 25px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .cart-footer button:hover {
+      background-color: #cf9d5c;
+      transform: scale(1.05);
+    }
+    #payment-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    #payment-form button {
+      background-color: #730027;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    #payment-form button:hover {
+      background-color: #730027;
+      transform: scale(1.05);
+    }
+
+    /* تعديل زر الحذف */
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+    }
+
+    .cart-item p {
+      margin: 0;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .remove-item {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .remove-item:hover {
+      background-color: #c0392b;
+      transform: scale(1.1);
+    }
+
+    .remove-item:focus {
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <img src="images/logo.png" alt="شعار عبايات رهام" style="height: 50px;">
+      </div>
+      <nav class="nav">
+        <a href="#" id="home-link">الرئيسية</a>
+        <a href="index.html#collection">المجموعة</a>
+        <a href="index.html#about">عن المتجر</a>
+        <a href="admin.html">اتصل بنا</a>
+        <a href="cart.html"><i class="fas fa-shopping-cart"></i> (<span id="cart-count">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="cart">
+    <div class="container">
+      <h2>عربة التسوق</h2>
+      <div class="cart-items"></div>
+      <p>الإجمالي: <span id="total-price">0.00</span> ريال</p>
+
+      <div id="payment-section" style="display: none;">
+        <h3>معلومات الدفع</h3>
+        <form id="payment-form">
+          <input type="text" name="name" placeholder="الاسم الكامل" required>
+          <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+          <input type="text" name="address" placeholder="عنوان التوصيل" required>
+          <input type="text" name="card-number" placeholder="رقم البطاقة البنكية" required>
+          <input type="month" name="expiry-date" placeholder="تاريخ انتهاء البطاقة" required>
+          <input type="text" name="cvv" placeholder="رمز الأمان (CVV)" required>
+          <button type="submit" class="btn">إتمام الدفع</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="cart-footer">
+    <span class="total-price" id="total-price-footer">الإجمالي: 0.00 ريال</span>
+    <button id="checkout-btn">الدفع</button>
+  </div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cartContainer = document.querySelector('.cart-items');
+    let totalPriceElement = document.getElementById('total-price');
+    let totalPriceFooter = document.getElementById('total-price-footer');
+
+    function displayCart() {
+      if (!cartContainer || !totalPriceElement) return;
+      cartContainer.innerHTML = '';
+      let totalPrice = 0;
+
+      cart.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.classList.add('cart-item');
+        div.innerHTML = `
+          <p>${item.name} - ${item.price} ريال</p>
+          <button class="remove-item" data-index="${index}">حذف</button>
+        `;
+        cartContainer.appendChild(div);
+        totalPrice += parseFloat(item.price);
+      });
+
+      totalPriceElement.innerText = totalPrice.toFixed(2);
+      totalPriceFooter.innerText = `الإجمالي: ${totalPrice.toFixed(2)} ريال`;
+    }
+
+    function updateCartCount() {
+      const cartCount = document.getElementById('cart-count');
+      if (cartCount) {
+        cartCount.innerText = cart.length;
+      }
+    }
+
+    cartContainer?.addEventListener('click', (e) => {
+      if (e.target.classList.contains('remove-item')) {
+        const index = e.target.dataset.index;
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        displayCart();
+      }
+    });
+
+    document.getElementById('checkout-btn')?.addEventListener('click', () => {
+      document.getElementById('payment-section').style.display = 'block';
+    });
+
+    document.getElementById('payment-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // مسح السلة بعد إتمام الدفع
+      localStorage.removeItem('cart');
+      // بعد إتمام الدفع، توجيه المستخدم إلى صفحة الشكر
+      window.location.href = "thank_you.html"; // التوجيه إلى صفحة الشكر مباشرة
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const homeLink = document.getElementById('home-link');
+      if (homeLink) {
+        const isInSubfolder = window.location.pathname.includes("cart");
+        homeLink.setAttribute("href", isInSubfolder ? "../index.html" : "index.html");
+      }
+    });
+
+    updateCartCount();
+    displayCart();
+  </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
