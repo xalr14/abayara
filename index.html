@@ -5,9 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>عبايات رهام</title>
   <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
-
   <link rel="stylesheet" href="style.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    .contact-us {
+      background-color: #730027;
+      padding: 40px 0;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .contact-title {
+      font-size: 2rem;
+      color: #730027;
+      margin-bottom: 20px;
+    }
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #b0b0b0;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      box-sizing: border-box;
+    }
+    .contact-form textarea {
+      resize: vertical;
+      min-height: 150px;
+    }
+    .contact-form button {
+      width: 100%;
+      padding: 15px;
+      background-color: #730027;
+      color: rgb(255, 255, 255);
+      border: none;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .contact-form button:hover {
+      background-color: #730027;
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -15,49 +62,58 @@
       <div class="logo">
         <img src="images/logo.png" alt="شعار عبايات رهام" style="height: 50px;">
       </div>
-      <nav class="nav">
-        <a href="index.html">الرئيسية</a>
-        <a href="index.html#collection">المجموعة</a>
-        <a href="#about">عن المتجر</a>
-        <a href="cart.html"><i class="fas fa-shopping-cart"></i> (<span id="cart-count">0</span>)</a>
+      <nav class="nav" id="nav-bar">
+        <a href="index.html" class="home-link">الرئيسية</a>
+        <a href="index.html#collection" class="collection-link">المجموعة</a>
+        <a href="#about" class="about-link">عن المتجر</a>
+        <a href="index.html#about" class="about-link">اتصل بنا</a>
+        <a href="cart.html" class="cart-link"><i class="fas fa-shopping-cart"></i> (<span id="cart-count">0</span>)</a>
+        <a href="login.html" class="signin-link" id="auth-link">تسجيل الدخول</a>
       </nav>
     </div>
   </header>
 
   <section class="hero">
     <div class="hero-content">
-      <h2>عبايات رهام</h2>
-      <p>تسوق أفضل العبايات بأجمل التصاميم</p>
-      <a href="#collection" class="btn">اكتشف الآن</a>
+      <h2 class="hero-title">عبايات رهام</h2>
+      <p class="hero-description">تسوق أفضل العبايات بأجمل التصاميم</p>
+      <a href="#collection" class="btn hero-btn">اكتشف الآن</a>
     </div>
   </section>
 
   <section class="collection" id="collection">
-    <h2>مجموعة العبايات</h2>
-    <div class="products" id="products-container">
-    </div>
+    <h2 class="collection-title">مجموعة العبايات</h2>
+    <div class="products" id="products-container"></div>
   </section>
 
   <section class="about-section container" id="about">
-    <h1>عن عبايات رهام</h1>
-    <p>
-      متجر "عبايات رهام" تأسس ليقدم لكِ أرقى تصاميم العبايات الشرقية، بجودة عالية وأناقة تناسب جميع الأذواق. نحن نهتم بالتفاصيل ونؤمن أن العباية ليست مجرد قطعة ملابس، بل تعبير عن الهوية والجمال.
+    <h1 class="about-title">عن عبايات رهام</h1>
+    <p class="about-description">
+      متجر "عبايات رهام" تأسس ليقدم لكِ أرقى تصاميم العبايات الشرقية، بجودة عالية وأناقة تناسب جميع الأذواق.
     </p>
-    <h2>رؤيتنا</h2>
-    <p>
-      أن نصبح الخيار الأول للنساء الباحثات عن الأناقة والجودة في عالم العبايات، من خلال تصميمات فريدة ومواد فاخرة.
+    <h2 class="vision-title">رؤيتنا</h2>
+    <p class="vision-description">
+      أن نصبح الخيار الأول للنساء الباحثات عن الأناقة والجودة في عالم العبايات.
     </p>
-    <h2>لماذا نحن؟</h2>
-    <ul>
+    <h2 class="why-us-title">لماذا نحن؟</h2>
+    <ul class="why-us-list">
       <li>تصاميم حصرية وعصرية.</li>
       <li>خامات فاخرة مختارة بعناية.</li>
       <li>خدمة عملاء راقية وتجربة تسوق سلسة.</li>
     </ul>
   </section>
 
-  <footer class="footer">
-    <p>&copy; 2025 عبايات رهام</p>
-  </footer>
+  <section class="contact-us">
+    <div class="container">
+      <h2 class="contact-title">اتصل بنا</h2>
+      <form action="#" method="POST" class="contact-form">
+        <input type="text" name="name" placeholder="الاسم الكامل" required>
+        <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+        <textarea name="message" rows="4" placeholder="رسالتك" required></textarea>
+        <button type="submit" class="btn submit-btn">إرسال</button>
+      </form>
+    </div>
+  </section>
 
   <script>
     const productsData = [];
@@ -75,20 +131,22 @@
       const productCard = document.createElement('div');
       productCard.className = 'product-card';
       productCard.innerHTML = `
-        <img src="${product.image}" alt="${product.name}" />
-        <h3>${product.name}</h3>
-        <p>سعر: ${product.price} ريال</p>
-        <button class="btn add-to-cart" data-name="${product.name}" data-price="${product.price}" data-description="${product.description}">أضف إلى السلة</button>
+        <div class="product-image">
+          <img src="${product.image}" alt="${product.name}" />
+        </div>
+        <div class="product-details">
+          <h3 class="product-name">${product.name}</h3>
+          <p class="product-price">${product.price} ريال</p>
+          <button class="btn add-to-cart" data-name="${product.name}" data-price="${product.price}" data-description="${product.description}">أضف إلى السلة</button>
+        </div>
       `;
       productsContainer.appendChild(productCard);
     });
 
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
     function updateCartCount() {
-      const cartLink = document.querySelector('.nav a[href="cart.html"]');
       const cartCount = document.getElementById('cart-count');
-      if (cartLink && cartCount) {
+      if (cartCount) {
         cartCount.innerText = cart.length;
       }
     }
@@ -107,6 +165,14 @@
     });
 
     updateCartCount();
+
+    // تعديل شريط التنقل حسب حالة تسجيل الدخول
+    const authLink = document.getElementById('auth-link');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      authLink.textContent = `مرحباً، ${currentUser.name}`;
+      authLink.href = '#';
+    }
   </script>
 </body>
 </html>
