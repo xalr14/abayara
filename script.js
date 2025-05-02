@@ -5,7 +5,6 @@ let totalPriceElement = document.getElementById('total-price');
 
 // فحص وجود "admin" في URL
 if (window.location.href.includes("admin")) {
-  // تغيير محتوى الصفحة إلى محتوى محظور
   document.body.innerHTML = `
     <h1>🚫 لا تعبث معي 🚫</h1>
     <img src="https://4kwallpapers.com/images/wallpapers/anonymous-hooded-5120x2880-14722.jpg" alt="Hacker Image" />
@@ -50,7 +49,49 @@ if (window.location.href.includes("admin")) {
     }
   `;
   document.head.appendChild(style);
+
 } else {
+  // عرض المنتجات تلقائياً (مقسم إلى مجموعات كل مجموعة فيها منتجين)
+  const products = [
+    { name: "عباية بيضاء 1", price: 250, description: "عباية أنيقة", image: "images/abaya1.jpg" },
+    { name: "عباية بيضاء 2", price: 270, description: "خامة ناعمة", image: "images/abaya2.jpg" },
+    { name: "عباية بيضاء 3", price: 230, description: "عباية راقية", image: "images/abaya3.jpg" },
+    { name: "عباية بيضاء 4", price: 260, description: "تفصيل ممتاز", image: "images/abaya4.jpg" },
+    // أضف المزيد حسب الحاجة
+  ];
+
+  const productsContainer = document.querySelector('.products');
+  if (productsContainer) {
+    productsContainer.innerHTML = '';
+
+    for (let i = 0; i < products.length; i += 2) {
+      const groupDiv = document.createElement('div');
+      groupDiv.classList.add('product-group');
+
+      for (let j = i; j < i + 2 && j < products.length; j++) {
+        const product = products[j];
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product-card');
+        productDiv.style.setProperty('--i', j); // للأنيميشن
+
+        productDiv.innerHTML = `
+          <img src="${product.image}" alt="${product.name}" />
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <p>${product.price} ريال</p>
+          <button class="btn add-to-cart"
+                  data-name="${product.name}"
+                  data-price="${product.price}"
+                  data-description="${product.description}">أضف إلى السلة</button>
+        `;
+
+        groupDiv.appendChild(productDiv);
+      }
+
+      productsContainer.appendChild(groupDiv);
+    }
+  }
+
   // عرض المنتجات في السلة
   function displayCart() {
     if (!cartContainer || !totalPriceElement) return;
@@ -79,9 +120,10 @@ if (window.location.href.includes("admin")) {
     }
   }
 
-  // إضافة منتج عند الضغط على "أضف إلى السلة"
-  document.querySelectorAll('.add-to-cart').forEach(btn => {
-    btn.addEventListener('click', () => {
+  // إضافة منتج إلى السلة
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('add-to-cart')) {
+      const btn = e.target;
       const name = btn.dataset.name;
       const price = btn.dataset.price;
       const description = btn.dataset.description;
@@ -91,11 +133,10 @@ if (window.location.href.includes("admin")) {
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount();
 
-      // في حالة كنت داخل صفحة السلة، يحدث العرض
       if (window.location.href.includes("cart.html")) {
         displayCart();
       }
-    });
+    }
   });
 
   // حذف منتج من السلة
@@ -109,23 +150,19 @@ if (window.location.href.includes("admin")) {
     }
   });
 
-  // التعامل مع الدفع
+  // إظهار نموذج الدفع
   document.getElementById('checkout-btn')?.addEventListener('click', () => {
     document.getElementById('payment-section').style.display = 'block';
   });
 
-  // إتمام الدفع
+  // تنفيذ عملية الدفع
   document.getElementById('payment-form')?.addEventListener('submit', (e) => {
     e.preventDefault();
     alert('تم الدفع بنجاح!');
-
-    // مسح المنتجات من السلة بعد الدفع
     cart = [];
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
-
-    // العودة للصفحة الرئيسية بعد إتمام الدفع
-    window.location.href = "index.html"; // العودة إلى الصفحة الرئيسية
+    window.location.href = "index.html";
   });
 
   // ضبط رابط زر "الرئيسية"
@@ -137,7 +174,72 @@ if (window.location.href.includes("admin")) {
     }
   });
 
-  // تشغيل عند تحميل الصفحة
   updateCartCount();
   displayCart();
+
+  // التبديل بين اللغات عند الضغط على الزر
+  let currentLanguage = 'ar';
+  const languageData = {
+    ar: {
+      home: 'الرئيسية',
+      collection: 'المجموعة',
+      about: 'عن المتجر',
+      cart: 'السلة',
+      signin: 'تسجيل الدخول',
+      heroTitle: 'عبايات رهام',
+      heroDescription: 'تسوق أفضل العبايات بأجمل التصاميم',
+      discover: 'اكتشف الآن',
+      collectionTitle: 'مجموعة العبايات',
+      aboutTitle: 'عن عبايات رهام',
+      aboutDescription: 'متجر "عبايات رهام" تأسس ليقدم لكِ أرقى تصاميم العبايات الشرقية.',
+      visionTitle: 'رؤيتنا',
+      visionDescription: 'أن نصبح الخيار الأول للنساء الباحثات عن الأناقة والجودة.',
+      whyUsTitle: 'لماذا نحن؟',
+      whyUsList: ['تصاميم حصرية وعصرية.', 'خامات فاخرة مختارة بعناية.', 'خدمة عملاء راقية وتجربة تسوق سلسة.'],
+      footerText: '© 2025 عبايات رهام'
+    },
+    en: {
+      home: 'Home',
+      collection: 'Collection',
+      about: 'About Us',
+      cart: 'Cart',
+      signin: 'Sign In',
+      heroTitle: 'Raham Abayas',
+      heroDescription: 'Shop the best abayas with the most beautiful designs',
+      discover: 'Discover Now',
+      collectionTitle: 'Abaya Collection',
+      aboutTitle: 'About Raham Abayas',
+      aboutDescription: 'Raham Abayas was established to offer the finest Eastern abaya designs.',
+      visionTitle: 'Our Vision',
+      visionDescription: 'To become the first choice for women seeking elegance and quality.',
+      whyUsTitle: 'Why Us?',
+      whyUsList: ['Exclusive and modern designs.', 'Carefully selected luxurious fabrics.', 'Elegant customer service and a smooth shopping experience.'],
+      footerText: '© 2025 Raham Abayas'
+    }
+  };
+
+  document.getElementById('language-toggle').addEventListener('click', () => {
+    currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+    changeLanguage(currentLanguage);
+  });
+
+  function changeLanguage(lang) {
+    currentLanguage = lang;
+    document.querySelector('.home-link').innerText = languageData[lang].home;
+    document.querySelector('.collection-link').innerText = languageData[lang].collection;
+    document.querySelector('.about-link').innerText = languageData[lang].about;
+    document.querySelector('.cart-link').innerText = languageData[lang].cart;
+    document.querySelector('.signin-link').innerText = languageData[lang].signin;
+    document.querySelector('.hero-title').innerText = languageData[lang].heroTitle;
+    document.querySelector('.hero-description').innerText = languageData[lang].heroDescription;
+    document.querySelector('.hero-btn').innerText = languageData[lang].discover;
+    document.querySelector('.collection-title').innerText = languageData[lang].collectionTitle;
+    document.querySelector('.about-title').innerText = languageData[lang].aboutTitle;
+    document.querySelector('.about-description').innerText = languageData[lang].aboutDescription;
+    document.querySelector('.vision-title').innerText = languageData[lang].visionTitle;
+    document.querySelector('.vision-description').innerText = languageData[lang].visionDescription;
+    document.querySelector('.why-us-title').innerText = languageData[lang].whyUsTitle;
+    document.querySelector('.why-us-list').innerHTML = languageData[lang].whyUsList.map(item => `<li>${item}</li>`).join('');
+    document.querySelector('.footer-text').innerText = languageData[lang].footerText;
+  }
 }
