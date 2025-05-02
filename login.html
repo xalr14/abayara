@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تسجيل الدخول - عبايات رهام</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #730027;
+      font-family: 'Tajawal', sans-serif;
+      color: #730027;
+      direction: rtl;
+      margin: 0;
+    }
+    .login-container {
+      max-width: 400px;
+      margin: 60px auto;
+      background-color: #fff5f5;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .login-container input, .login-container button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    .login-container input {
+      border: 1px solid #ccc;
+    }
+    .login-container button {
+      background-color: #730027;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+    .login-container button:hover {
+      background-color: #5a0020;
+    }
+    .login-container .link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: #730027;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .login-container .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="logo">
+        <img src="images/logo.png" alt="شعار عبايات رهام" style="height: 50px;">
+      </div>
+      <nav class="nav">
+        <a href="index.html">الرئيسية</a>
+        <a href="index.html#collection">المنتجات</a>
+        <a href="index.html#contact" class="about-link">اتصل بنا</a>
+        <a href="cart.html">السلة</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="login-container">
+    <h2>تسجيل الدخول</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+      <input type="password" id="password" placeholder="كلمة المرور" required>
+      <button type="submit">دخول</button>
+    </form>
+    <a href="signup.html" class="link">ليس لديك حساب؟ أنشئ حساب جديد</a>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const storedEmail = localStorage.getItem('email');
+      const storedPassword = localStorage.getItem('password');
+      const storedName = localStorage.getItem('fullname');
+
+      if (email === storedEmail && password === storedPassword) {
+        alert('مرحبًا ' + storedName + '، تم تسجيل دخولك بنجاح 🎉');
+        window.location.href = 'index.html'; // توجيه بعد تسجيل الدخول
+      } else {
+        alert('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+      }
+    });
+  </script>
+
+</body>
+</html>

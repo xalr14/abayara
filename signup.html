@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>إنشاء حساب - عبايات رهام</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #730027;
+      font-family: 'Tajawal', sans-serif;
+      color: #730027;
+      direction: rtl;
+      margin: 0;
+    }
+    .signup-container {
+      max-width: 400px;
+      margin: 60px auto;
+      background-color: #fff5f5;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    .signup-container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .signup-container input, .signup-container button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    .signup-container input {
+      border: 1px solid #ccc;
+    }
+    .signup-container button {
+      background-color: #730027;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+    .signup-container button:hover {
+      background-color: #5a0020;
+    }
+    .signup-container .link {
+      display: block;
+      text-align: center;
+      margin-top: 1rem;
+      color: #730027;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .signup-container .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="logo">
+        <img src="images/logo.png" alt="شعار عبايات رهام" style="height: 50px;">
+      </div>
+      <nav class="nav">
+        <a href="index.html">الرئيسية</a>
+        <a href="index.html#collection">المنتجات</a>
+        <a href="cart.html">السلة</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="signup-container">
+    <h2>إنشاء حساب</h2>
+    <form id="signupForm">
+      <input type="text" id="fullname" placeholder="الاسم الكامل" required>
+      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+      <input type="password" id="password" placeholder="كلمة المرور" required>
+      <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required>
+      <button type="submit">إنشاء الحساب</button>
+    </form>
+    <a href="login.html" class="link">لديك حساب بالفعل؟ سجل الدخول</a>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const fullname = document.getElementById('fullname').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        alert('كلمة المرور غير متطابقة');
+        return;
+      }
+
+      localStorage.setItem('fullname', fullname);
+      localStorage.setItem('email', email);
+      localStorage.setItem('password', password);
+
+      alert('تم إنشاء الحساب بنجاح');
+      window.location.href = 'login.html';
+    });
+  </script>
+
+</body>
+</html>
