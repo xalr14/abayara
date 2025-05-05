@@ -14,38 +14,71 @@
       direction: rtl;
       margin: 0;
     }
+
     .login-container {
       max-width: 400px;
       margin: 60px auto;
-      background-color: #fff5f5;
+      background-color: #ffffff;
       padding: 2rem;
       border-radius: 15px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     }
+
     .login-container h2 {
       text-align: center;
       margin-bottom: 1.5rem;
     }
-    .login-container input, .login-container button {
+
+    .login-container input {
       width: 100%;
       padding: 0.75rem;
       margin-bottom: 1rem;
       border-radius: 10px;
+      border: 1px solid #ccc;
       font-size: 1rem;
     }
-    .login-container input {
-      border: 1px solid #ccc;
-    }
+
     .login-container button {
+      width: 100%;
+      padding: 0.75rem;
       background-color: #730027;
-      color: #fff;
+      color: #ffffff;
       border: none;
       border-radius: 25px;
+      font-size: 1rem;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
+
     .login-container button:hover {
-      background-color: #5a0020;
+      background-color: #9c0034;
     }
+
+    .google-btn {
+      background-color: #fff;
+      color: #730027;
+      margin-top: 10px;
+      padding: 0.75rem;
+      border-radius: 25px;
+      font-size: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border: 2px solid #730027;
+      transition: all 0.3s ease;
+    }
+
+    .google-btn:hover {
+      background-color: #730027;
+      color: white;
+    }
+
+    .google-btn img {
+      width: 20px; /* جعل الشعار بحجم مناسب */
+      margin-left: 15px;
+    }
+
     .login-container .link {
       display: block;
       text-align: center;
@@ -54,8 +87,16 @@
       text-decoration: none;
       font-size: 0.95rem;
     }
+
     .login-container .link:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        margin: 20px 10px;
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -69,7 +110,6 @@
       <nav class="nav">
         <a href="index.html">الرئيسية</a>
         <a href="index.html#collection">المنتجات</a>
-        <a href="index.html#contact" class="about-link">اتصل بنا</a>
         <a href="cart.html">السلة</a>
       </nav>
     </div>
@@ -77,30 +117,38 @@
 
   <div class="login-container">
     <h2>تسجيل الدخول</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-      <input type="password" id="password" placeholder="كلمة المرور" required>
+    <form>
+      <input type="email" placeholder="البريد الإلكتروني" required>
+      <input type="password" placeholder="كلمة المرور" required>
       <button type="submit">دخول</button>
     </form>
+    <div class="google-btn" id="googleBtn">
+      <span>تسجيل الدخول باستخدام جوجل</span>
+      <img src="images/google-logo.png" alt="Google Logo">
+    </div>
     <a href="signup.html" class="link">ليس لديك حساب؟ أنشئ حساب جديد</a>
   </div>
+ 
 
+  <!-- تضمين مكتبة جوجل للتسجيل -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script>
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+    gapi.load('auth2', function() {
+      gapi.auth2.init({
+        client_id: '1079485166275-tr3rmqr7e5d2l6jbn54t1setu3c6n38p.apps.googleusercontent.com'
+      });
+    });
 
-      const storedEmail = localStorage.getItem('email');
-      const storedPassword = localStorage.getItem('password');
-      const storedName = localStorage.getItem('fullname');
-
-      if (email === storedEmail && password === storedPassword) {
-        alert('مرحبًا ' + storedName + '، تم تسجيل دخولك بنجاح 🎉');
-        window.location.href = 'index.html'; // توجيه بعد تسجيل الدخول
-      } else {
-        alert('البريد الإلكتروني أو كلمة المرور غير صحيحة');
-      }
+    document.getElementById('googleBtn').addEventListener('click', function() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signIn().then(function(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId());
+        console.log("Name: " + profile.getName());
+        console.log("Email: " + profile.getEmail());
+        
+        // يمكن إضافة منطق هنا لتخزين البيانات أو إتمام عملية تسجيل الدخول.
+      });
     });
   </script>
 
