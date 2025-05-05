@@ -14,6 +14,7 @@
       direction: rtl;
       margin: 0;
     }
+
     .signup-container {
       max-width: 400px;
       margin: 60px auto;
@@ -22,30 +23,40 @@
       border-radius: 15px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     }
+
     .signup-container h2 {
       text-align: center;
       margin-bottom: 1.5rem;
     }
-    .signup-container input, .signup-container button {
+
+    .signup-container input {
       width: 100%;
       padding: 0.75rem;
       margin-bottom: 1rem;
       border-radius: 10px;
+      border: 1px solid #ccc;
       font-size: 1rem;
     }
-    .signup-container input {
-      border: 1px solid #ccc;
-    }
+
     .signup-container button {
+      width: 100%;
+      padding: 0.75rem;
       background-color: #730027;
-      color: #fff;
+      color: #ffffff;
       border: none;
       border-radius: 25px;
+      font-size: 1rem;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
+
     .signup-container button:hover {
-      background-color: #5a0020;
+      background-color: #730027;
     }
+
+    
+    
+
     .signup-container .link {
       display: block;
       text-align: center;
@@ -54,13 +65,22 @@
       text-decoration: none;
       font-size: 0.95rem;
     }
+
     .signup-container .link:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .signup-container {
+        margin: 20px 10px;
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- الشريط العلوي الكامل -->
   <header>
     <div class="container">
       <div class="logo">
@@ -76,37 +96,16 @@
 
   <div class="signup-container">
     <h2>إنشاء حساب</h2>
-    <form id="signupForm">
-      <input type="text" id="fullname" placeholder="الاسم الكامل" required>
-      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-      <input type="password" id="password" placeholder="كلمة المرور" required>
-      <input type="password" id="confirmPassword" placeholder="تأكيد كلمة المرور" required>
+    <form>
+      <input type="text" placeholder="الاسم الكامل" required>
+      <input type="email" placeholder="البريد الإلكتروني" required>
+      <input type="password" placeholder="كلمة المرور" required>
+      <input type="password" placeholder="تأكيد كلمة المرور" required>
       <button type="submit">إنشاء الحساب</button>
+   
     </form>
     <a href="login.html" class="link">لديك حساب بالفعل؟ سجل الدخول</a>
   </div>
-
-  <script>
-    document.getElementById('signupForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const fullname = document.getElementById('fullname').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-
-      if (password !== confirmPassword) {
-        alert('كلمة المرور غير متطابقة');
-        return;
-      }
-
-      localStorage.setItem('fullname', fullname);
-      localStorage.setItem('email', email);
-      localStorage.setItem('password', password);
-
-      alert('تم إنشاء الحساب بنجاح');
-      window.location.href = 'login.html';
-    });
-  </script>
 
 </body>
 </html>
