@@ -11,17 +11,57 @@
     html {
       scroll-behavior: smooth;
     }
+
+    header {
+      background-color: #730027; /* تعديل اللون هنا */
+      color: white; /* تغيير لون النص داخل الـ header */
+    }
+
+    .search-container {
+      position: relative;
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .search-icon {
+      cursor: pointer;
+      color: #ffffff;
+      font-size: 18px;
+    }
+
+    .search-box {
+      display: none;
+      position: absolute;
+      top: 30px;
+      right: 0;
+      background: white;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      z-index: 1000;
+    }
+
+    .search-box input {
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      width: 180px;
+    }
+
     .contact-us {
       background-color: #ffe3e3;
       padding: 40px 0;
       text-align: center;
       margin-top: 40px;
     }
+
     .contact-title {
       font-size: 2rem;
       color: #730027;
       margin-bottom: 20px;
     }
+
     .contact-form {
       max-width: 600px;
       margin: 0 auto;
@@ -30,6 +70,7 @@
       border-radius: 15px;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     }
+
     .contact-form input, .contact-form textarea {
       width: 100%;
       padding: 15px;
@@ -39,10 +80,12 @@
       font-size: 1.1rem;
       box-sizing: border-box;
     }
+
     .contact-form textarea {
       resize: vertical;
       min-height: 150px;
     }
+
     .contact-form button {
       width: 100%;
       padding: 15px;
@@ -54,28 +97,68 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
+
+
+    .right-section a:hover i,
+.search-icon:hover {
+  color: black;
+}
+
+
+.right-section i {
+  transition: color 0.3s ease;
+}
+
+
+.left-section .nav {
+  margin-right: 20px; /* تزحزح القائمة شوي بعيد عن الشعار */
+}
+
     .contact-form button:hover {
       background-color: #730027;
     }
+
+
+    .login-link i {
+  color: white;
+  font-size: 18px;
+  margin: 0 10px;
+}
+
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="container">
-      <div class="logo">
-        <img src="images/logo.png" alt="شعار عبايات رهام" style="height: 50px;">
+  <header>
+    <div class="container header-container">
+      <div class="left-section">
+        <div class="logo">
+          <img src="images/logo.png" alt="شعار عبايات رهام" style="height: 50px;">
+        </div>
+        <nav class="nav">
+          <a href="index.html">الرئيسية</a>
+          <a href="index.html#collection">المنتجات</a>
+          <a href="#about">عن المتجر</a>
+          <a href="#contact">اتصل بنا</a>
+        </nav>
       </div>
-      <nav class="nav" id="nav-bar">
-        <a href="index.html" class="home-link">الرئيسية</a>
-        <a href="index.html#collection" class="collection-link">المجموعة</a>
-        <a href="#about" class="about-link">عن المتجر</a>
-        <a href="#contact" class="about-link">اتصل بنا</a>
-        <a href="cart.html" class="cart-link"><i class="fas fa-shopping-cart"></i> (<span id="cart-count">0</span>)</a>
-        <a href="login.html" class="signin-link" id="auth-link">تسجيل الدخول</a>
-      </nav>
+      <div class="right-section">
+        <div class="search-container">
+          <i class="fas fa-search search-icon" id="search-toggle" title="بحث"></i>
+          <div class="search-box" id="search-box">
+            <input type="text" placeholder="ابحث هنا..." />
+          </div>
+        </div>
+        <a href="login.html" class="login-link" title="تسجيل الدخول">
+          <i class="fas fa-user"></i>
+        </a>
+        <a href="cart.html" class="cart-link" title="سلة المشتريات">
+          <i class="fas fa-shopping-cart"></i> (<span id="cart-count">0</span>)
+        </a>
+      </div>
     </div>
   </header>
-
+  
+  
   <section class="hero">
     <div class="hero-content">
       <h2 class="hero-title">عبايات رهام</h2>
@@ -176,6 +259,18 @@
       authLink.textContent = `مرحباً، ${currentUser.name}`;
       authLink.href = '#';
     }
+
+    // عرض وإخفاء مربع البحث
+    const searchToggle = document.getElementById('search-toggle');
+    const searchBox = document.getElementById('search-box');
+
+    searchToggle.addEventListener('click', () => {
+      if (searchBox.style.display === 'block') {
+        searchBox.style.display = 'none';
+      } else {
+        searchBox.style.display = 'block';
+      }
+    });
   </script>
 </body>
 </html>
